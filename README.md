@@ -35,7 +35,7 @@ You can either clone this repo and build the image yourself, or simply pull the 
 To clone the repo and build you can run the following:
 
 ```
-git clone ADDRESS HERE
+git clone https://github.com/skjerven/jupyter-ml.git
 
 cd jupyter-ml
 
