@@ -5,9 +5,9 @@ services:
     container_name: jupyterhub
     image: bskjerven/jupyter-ml
     volumes:
-      - ./ml-repo:/home/jovyan/work
+      - /some/path:/home/jovyan/work
     ports:
-      - 8888:8888
+      - 8080:8888
     #user: root
     #working_dir: /home/skj002/work
     #environment:

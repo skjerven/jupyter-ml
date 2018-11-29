@@ -54,10 +54,10 @@ docker pull bskjerven/jupyter-ml:latest
 
 ## Overview of Running Jupyter Hub
 
-Running this container will start a Jupyter Notebook server, and expose it on port 8888.  You can then point your web browser to
+Running this container will start a Jupyter Notebook server, which you can then point your web browser to:
 
 ```
-http://<host>:888/?token=<token>
+http://<host>:8080/?token=<token>
 ```
 
 Here `<host>` is the hostname or IP address of the server where your container is running.  If you're running this on your local machine, you can use either
@@ -68,21 +68,21 @@ If you're running on a Nimbus VM, you'll use the public IP address (`146.X.X.X`)
 
 The `<token>` is a secret token created by the Jupyter Notebook server at startup.  You can query the running to get this value, and enter in the login page you see (more on this later).
 
- **NOTE**: If you're running on a Nimbus VM you'll need to edit your security groups and open up port **8888**.
+ **NOTE**: If you're running on a Nimbus VM you'll need to edit your security groups and open up the desired port.  This example assumes **port 8080** is open.
 
 ### Starting via `docker run`
 
 To run this from the command line:
 
 ```
-docker run --rm -p 8888:8888 -v /some/tutorial/path:/home/jovyan/work bskjerven/jupyter-ml
+docker run --rm -p 8080:8888 -v /some/tutorial/path:/home/jovyan/work bskjerven/jupyter-ml
 ```
 
 The Docker run flags are
 
 * `--rm` Automatically remove the container after it exits
 
-* `-p 8888:8888` Expose port 8888 on the host machine as port 8888 inside the container
+* `-p 8080:8888` Expose port 8080 on the host machine as port 8888 inside the container.  We're using 8080 because that's one of the ports already opened.  You can use whatever host port you want, so long as you open it up in your security groups, and don't have another process using the same port.
 
 * `-v /some/tutorial/path:/home/jovyan/work` Mount the host directory `/some/tutorial/path` to the directory `/home/jovyan/work` inside the container (`jovyan` is the default user for the Juypter Notebook containers
 
@@ -98,13 +98,13 @@ Executing the command: jupyter notebook
 [I 23:13:11.125 NotebookApp] JupyterLab application directory is /opt/conda/share/jupyter/lab
 [I 23:13:11.128 NotebookApp] Serving notebooks from local directory: /home/jovyan
 [I 23:13:11.128 NotebookApp] The Jupyter Notebook is running at:
-[I 23:13:11.128 NotebookApp] http://(16aed84461a6 or 127.0.0.1):8888/?token=2234ed6d0818641b2bcb4ceba6496f1abcfd5b363636ed5c
+[I 23:13:11.128 NotebookApp] http://(16aed84461a6 or 127.0.0.1):8080/?token=2234ed6d0818641b2bcb4ceba6496f1abcfd5b363636ed5c
 [I 23:13:11.128 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
 [C 23:13:11.129 NotebookApp]
 
     Copy/paste this URL into your browser when you connect for the first time,
     to login with a token:
-        http://(16aed84461a6 or 127.0.0.1):8888/?token=2234ed6d0818641b2bcb4ceba6496f1abcfd5b363636ed5c
+        http://(16aed84461a6 or 127.0.0.1):8080/?token=2234ed6d0818641b2bcb4ceba6496f1abcfd5b363636ed5c
 ```
 
 The important piece is that last line:
@@ -112,18 +112,18 @@ The important piece is that last line:
 ```
 Copy/paste this URL into your browser when you connect for the first time,
     to login with a token:
-        http://(16aed84461a6 or 127.0.0.1):8888/?token=2234ed6d0818641b2bcb4ceba6496f1abcfd5b363636ed5c
+        http://(16aed84461a6 or 127.0.0.1):8080/?token=2234ed6d0818641b2bcb4ceba6496f1abcfd5b363636ed5c
 ```
 
 The Notebook server is printing the token we need to use to login.  You can either point your browser to:
 
 ```
-http://127.0.0.1:8888/?token=2234ed6d0818641b2bcb4ceba6496f1abcfd5b363636ed5c
+http://127.0.0.1:8080/?token=2234ed6d0818641b2bcb4ceba6496f1abcfd5b363636ed5c
 ```
 and it will automatically enter the token for you, or you can open
 
 ```
-http://127.0.0.1:8888
+http://127.0.0.1:8080
 ```
 and copy and paste the token into the first box in the login screen.
 
@@ -148,7 +148,7 @@ services:
     volumes:
       - /some/path:/home/jovyan/work
     ports:
-      - 8888:8888
+      - 8080:8888
     #user: root
     #working_dir: /home/skj002/work
     #environment:
@@ -189,7 +189,7 @@ If it's succesfull, should see
 Creating jupyterhub ... done
 ```
 
-and you can now point your browser to `http://<host>:8888`
+and you can now point your browser to `http://<host>:8080`
 
 The `-d` flag means to run this container in the background, so we can have our terminal back to use.  The one issue with this is that we can't see any of the log output, so we can't see our generated token.  Docker has an option for this:
 
@@ -204,7 +204,7 @@ You should see a line similar to:
 
 ```
 Currently running servers:
-http://0.0.0.0:8888/?token=29931732c9e100bfe774b422e80e2a50cc83d2cc589152b9 :: /home/jovyan
+http://0.0.0.0:8080/?token=29931732c9e100bfe774b422e80e2a50cc83d2cc589152b9 :: /home/jovyan
 ```
 
 We can copy the token value displayed into our login page.
