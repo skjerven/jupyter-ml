@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  jupyter:
+    container_name: jupyterhub
+    image: bskjerven/jupyter-ml
+    volumes:
+      - ./ml-repo:/home/jovyan/work
+    ports:
+      - 8888:8888
+    #user: root
+    #working_dir: /home/skj002/work
+    #environment:
+      #- JUPYTER_ENABLE_LAB=yes
+      #- NB_USER=skj002
+      #- NB_UID=1086611592
+      #- NB_GID=515598196
+      #- CHOWN_HOME=yes
+      #- CHOWN_HOME_OPTS=-R
